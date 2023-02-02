@@ -6,15 +6,31 @@ public class OCalculator implements ICalculator, IStack{
 	private ArrayList<Float> listOfNumbers;
 	private ArrayList<String> listOfCharacters;
 	
-	public OCalculator(ArrayList<String> a) {
+	public OCalculator() {
 		listOfNumbers = new ArrayList<Float>();
-		listOfCharacters = a;
+		listOfCharacters = new ArrayList<String>();
+	}
+
+	public ArrayList<Float> getListOfNumbers() {
+		return listOfNumbers;
+	}
+
+	public void setListOfNumbers(ArrayList<Float> listOfNumbers) {
+		this.listOfNumbers = listOfNumbers;
+	}
+
+	public ArrayList<String> getListOfCharacters() {
+		return listOfCharacters;
+	}
+
+	public void setListOfCharacters(ArrayList<String> listOfCharacters) {
+		this.listOfCharacters = listOfCharacters;
 	}
 
 	@Override
 	public Object Pop() {
 		float a = listOfNumbers.get(listOfNumbers.size()-1);
-		listOfNumbers.remove(listOfNumbers.size()-1);
+		listOfNumbers.remove(a);
 		return a;
 	}
 
@@ -71,7 +87,9 @@ public class OCalculator implements ICalculator, IStack{
 			if(listOfCharacters.get(pos)=="+") {
 				float b = (float) Pop();
 				float a = (float) Pop();
-				Push(Add(a, b));
+				float c = Add(a, b);
+				Push(c);
+				
 			}
 			else if(listOfCharacters.get(pos)=="-") {
 				float b = (float) Pop();
@@ -91,10 +109,7 @@ public class OCalculator implements ICalculator, IStack{
 			else if(Character.isDigit(listOfCharacters.get(pos).charAt(0))){
 				Push(listOfCharacters.get(pos));
 			}
-			else {
-				r = "Se ingreso un objeto incorrecto"; 
-				break;
-			}
+			pos = pos + 1;
 		}
 		if(r=="") {
 			if(Size() < 1) {
