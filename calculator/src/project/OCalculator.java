@@ -2,7 +2,7 @@ package project;
 import java.util.*;
 import java.lang.*;
 
-public class OCalculator implements ICalculator, IStack{
+public class OCalculator implements ICalculator, IStack<Float>{
 	private ArrayList<Float> listOfNumbers;
 	private ArrayList<String> listOfCharacters;
 	
@@ -28,26 +28,25 @@ public class OCalculator implements ICalculator, IStack{
 	}
 
 	@Override
-	public Object Pop() {
-		float a = listOfNumbers.get(listOfNumbers.size()-1);
-		listOfNumbers.remove(a);
-		return a;
+	public Float Pop() {
+		Float a = listOfNumbers.get(listOfNumbers.size()-1);
+        listOfNumbers.remove(listOfNumbers.size()-1);
+        return a;
 	}
 
 	@Override
-	public void Push(Object item) {
-		float number = Float.valueOf((String) item);
-		listOfNumbers.add(number);		
+	public void Push(Float item) {
+		listOfNumbers.add(item);	
 	}
 
 	@Override
-	public Object Peek() {
-		return listOfNumbers.get(listOfNumbers.size()-1);
-	}
+	public Float Peek() {
+        return listOfNumbers.get(listOfNumbers.size()-1);
+    }
 
 	@Override
 	public int Size() {
-		return listOfNumbers.size()-1;
+		return listOfNumbers.size();
 	}
 
 	@Override
@@ -84,34 +83,33 @@ public class OCalculator implements ICalculator, IStack{
 		int pos = 0;
 		String r = "";
 		while(pos < listOfCharacters.size()) {
-			if(listOfCharacters.get(pos)=="+") {
+			if(listOfCharacters.get(pos).equals("+")) {
 				float b = (float) Pop();
 				float a = (float) Pop();
 				float c = Add(a, b);
 				Push(c);
-				
 			}
-			else if(listOfCharacters.get(pos)=="-") {
+			else if(listOfCharacters.get(pos).equals("-")) {
 				float b = (float) Pop();
 				float a = (float) Pop();
 				Push(Substraction(a, b));
 			}
-			else if(listOfCharacters.get(pos)=="*") {
+			else if(listOfCharacters.get(pos).equals("*")) {
 				float b = (float) Pop();
 				float a = (float) Pop();
 				Push(Multiply(a, b));
 			}
-			else if(listOfCharacters.get(pos)=="/") {
+			else if(listOfCharacters.get(pos).equals("/")) {
 				float b = (float) Pop();
 				float a = (float) Pop();
 				Push(Divition(a, b));
 			}
 			else if(Character.isDigit(listOfCharacters.get(pos).charAt(0))){
-				Push(listOfCharacters.get(pos));
-			}
+                Push(Float.parseFloat(listOfCharacters.get(pos)));
+            }
 			pos = pos + 1;
 		}
-		if(r=="") {
+		if(r.equals("")) {
 			if(Size() < 1) {
 				r = "Faltaron " + (Size()-1) + "operadores";
 			}
